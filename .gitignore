@@ -1,0 +1,10 @@
+.gradle/
+.native/
+**/build/
+local.properties
+*.jks
+*.keystore
+tools/usda-sr.zip
+tools/test-food.jpg
+*.part
+.DS_Store

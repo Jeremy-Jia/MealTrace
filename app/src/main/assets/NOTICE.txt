@@ -1,0 +1,34 @@
+MealTrace / 食迹, 2026. Original app code: MIT (see LICENSE).
+
+Bundled ARM64 vision runner: llama.cpp and GGML, MIT.
+Pinned source: https://github.com/ggml-org/llama.cpp/tree/547208dca250ceb3e4c8615598d043f2b602a527
+Includes a Qwen-only no-thinking prompt patch. Native provenance and SHA256:
+app/src/main/assets/native-build.json. Rebuild: tools/prepare_native.py.
+Additional native dependencies include nlohmann/json, cpp-httplib, xxHash,
+SHA-256 and rotate-bits; licenses are in licenses/ and bundled in APK assets.
+
+Vision model: Qwen3.5-2B, Qwen team / Alibaba, Apache License 2.0.
+https://huggingface.co/Qwen/Qwen3.5-2B
+GGUF quantization: Unsloth, revision f6d5376be1edb4d416d56da11e5397a961aca8ae.
+https://huggingface.co/unsloth/Qwen3.5-2B-GGUF
+Weights are distributed separately. Pinned checksums: assets/models.json.
+No claim is made that this general model measures food mass accurately.
+
+Food candidate detection: Google ML Kit bundled image-labeling 17.0.9.
+Terms and privacy: https://developers.google.com/ml-kit/terms
+Image inputs and outputs are processed on-device. SDK performance and usage
+metrics can be sent to Google. No model extraction or reverse engineering.
+
+Nutrient data: USDA FoodData Central SR Legacy, official April 2018 CSV.
+https://fdc.nal.usda.gov/download-datasets/
+Selected records retain FDC IDs, English descriptions, and per-100g values.
+Chinese labels and matching aliases were added for this application.
+Data selection is limited and is not a complete Chinese recipe database.
+
+Debug-only fixture: Nutrition5k example_plate.jpg, dataset authors / Google
+Research, CC BY 4.0. Resized to 640 pixels. Attribution in licenses/.
+https://github.com/google-research-datasets/Nutrition5k
+The release APK does not include the test image or verification runner.
+
+Gradle wrapper: Gradle, Apache 2.0. Java test dependency: JUnit 4.13.2, EPL 1.0.
+Other Android transitive dependencies retain their respective licenses.

@@ -1,0 +1,11 @@
+{
+  "upstream": "https://github.com/ggml-org/llama.cpp",
+  "revision": "547208dca250ceb3e4c8615598d043f2b602a527",
+  "backend": "CPU ARM64; static C++ runtime; no NPU/GPU backend",
+  "patch": "Append empty completed think block before Qwen answer generation",
+  "sha256": "3218c388fa242c84fd16856ded554dae9bd369de208877db1db101ef5fc4595b",
+  "size": 8280176,
+  "ndk": "30.0.16248370",
+  "abi": "arm64-v8a",
+  "min_api": 30
+}

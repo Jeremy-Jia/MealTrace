@@ -1,0 +1,1 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"><instrumentation android:name=".Verification" android:targetPackage="dev.mealtrace.app" android:label="食迹本机验证" /></manifest>

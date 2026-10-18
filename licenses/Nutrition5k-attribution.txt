@@ -1,0 +1,8 @@
+Nutrition5k public example image, res/example_plate.jpg
+Author: Nutrition5k dataset authors (Google Research)
+Source: https://github.com/google-research-datasets/Nutrition5k
+License: Creative Commons Attribution 4.0 International
+https://creativecommons.org/licenses/by/4.0/
+Change: resized to 640 pixels for device functional verification.
+Only included in the debug test fixture, not in the release APK.
+Paper: Nutrition5k: Towards Automatic Nutritional Understanding of Generic Food (CVPR 2021).

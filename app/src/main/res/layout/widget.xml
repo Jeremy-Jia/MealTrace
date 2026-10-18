@@ -1,0 +1,5 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/widget_root" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="@drawable/widget_bg">
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="食迹 · 今天的饮食" android:textColor="#D6E3C7" android:textSize="13sp" />
+    <TextView android:id="@+id/widget_energy" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="尚未记录" android:textColor="#FFFFFF" android:textSize="26sp" android:textStyle="bold" android:layout_marginTop="5dp" />
+    <TextView android:id="@+id/widget_note" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="照常拍照，慢慢建立你的饮食记录" android:textColor="#D6E3C7" android:textSize="12sp" android:maxLines="2" />
+</LinearLayout>

@@ -1,0 +1,21 @@
+{
+  "name": "Qwen3.5-2B Q4_K_M / F16 vision",
+  "license": "Apache-2.0",
+  "source": "https://huggingface.co/Qwen/Qwen3.5-2B",
+  "quantization": "https://huggingface.co/unsloth/Qwen3.5-2B-GGUF/tree/f6d5376be1edb4d416d56da11e5397a961aca8ae",
+  "backend": "llama.cpp CPU ARM64; no NPU acceleration claimed",
+  "files": [
+    {
+      "name": "model.gguf",
+      "size": 1280835840,
+      "sha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+      "url": "https://huggingface.co/unsloth/Qwen3.5-2B-GGUF/resolve/f6d5376be1edb4d416d56da11e5397a961aca8ae/Qwen3.5-2B-Q4_K_M.gguf"
+    },
+    {
+      "name": "vision.gguf",
+      "size": 668227264,
+      "sha256": "7035e9cb8d7c6a9681d07eef9a364783e86ea4cd73faab2eabb4f43a101830c7",
+      "url": "https://huggingface.co/unsloth/Qwen3.5-2B-GGUF/resolve/f6d5376be1edb4d416d56da11e5397a961aca8ae/mmproj-F16.gguf"
+    }
+  ]
+}
