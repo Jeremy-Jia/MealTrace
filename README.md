@@ -1,12 +1,19 @@
 # 食迹 · MealTrace
 
-**iPhone 原生版本已加入 [iOS/](iOS/README.md)。** 使用同一离线模型和食物数据；通过 Metal 本地推理，后台检测按 iOS 的系统调度与打开时补扫运行。iPhone 的安装、签名和平台限制见该目录说明。
+应用显示名称为 **食迹**，英文名称和项目名为 **MealTrace**。提供 Android 和原生 iPhone 版本，不需要 Root、云服务账号或 API 密钥；照片在设备本地识别，结果先保存为待确认草稿。
 
-非 Root、端侧识别的 Android 饮食记录应用。照常用系统相机拍照，授权后自动发现新餐食；不需要云服务账号或 API 密钥。
+| 平台 | 当前版本 | 最低构建目标 | 本地推理 | 源码与构建说明 |
+| --- | --- | --- | --- | --- |
+| Android | 0.1.2 | Android 11 / API 30，ARM64 | llama.cpp CPU | [app/](app/)，下方构建步骤 |
+| iPhone | 0.1.1 | iOS 17 | llama.cpp Metal GPU | [iOS/](iOS/README.md)，SwiftUI / Xcode 工程 |
 
-**当前 Android 是 0.1.2 试用版，iPhone 是 0.1.1。** Android 主模型在手机 ARM64 CPU 上运行，尚未启用 NPU。照片估计的份量必须核对，食物与配方近似参考仍有限，不能把它当作精确摄入测量或营养诊断。小米扩库、界面与模型更新实测见 [Android 0.1.2 验证记录](docs/ANDROID-0.1.2-VERIFICATION.md)。
+两个平台共用 Qwen3.5-2B 离线模型、7,793 条 USDA 食物数据和常用中文别名，并支持分类搜索、自定义食物、饮食统计及体重记录。模型权重通过应用下载或用户导入，不随源码仓库分发。iPhone 需要使用自己的 Apple 开发账号签名安装，后台发现照片由 iOS 调度，打开应用时补扫；具体能力与限制见 [iPhone 说明](iOS/README.md)。
 
-## 已实现
+**当前均为试用版本。** Android 尚未启用 NPU，iPhone 未接入 Neural Engine。照片估计的份量必须核对，不能把它当作精确摄入测量或营养诊断。当前主要实测 Xiaomi 18 Pro / Android 17 与 iPhone 18 Pro / iOS 27.0.1，较低目标系统尚未完整实测。参见 [Android 实测](docs/ANDROID-0.1.2-VERIFICATION.md)和 [iPhone 实测](iOS/docs/VERIFICATION.md)。
+
+以下使用和构建步骤主要适用于 Android；iPhone 的工程、安装、签名和后台限制请参阅 [iOS/README.md](iOS/README.md)。
+
+## Android 已实现
 
 - 本地库扩展到 7,793 条 USDA 数据，113 条整理了常见中文与别名；分类、别名/英文搜索，以及按包装或配方数据添加的个人自定义食物。自定义支持 kJ/kcal 换算并随记录导出，明确标注为用户填写。
 - 本地食物候选筛选、Qwen3.5-2B 视觉草稿、离线营养表计算。
