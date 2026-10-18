@@ -1,0 +1,1094 @@
+[
+  {
+    "id": "rice",
+    "name": "白米饭",
+    "fdc_id": 168878,
+    "serving": 150,
+    "aliases": [
+      "米饭",
+      "白饭",
+      "白米",
+      "白米饭"
+    ]
+  },
+  {
+    "id": "brown_rice",
+    "name": "糙米饭",
+    "fdc_id": 169704,
+    "serving": 150,
+    "aliases": [
+      "糙米",
+      "糙米饭"
+    ]
+  },
+  {
+    "id": "noodles",
+    "name": "熟面条",
+    "fdc_id": 169762,
+    "serving": 180,
+    "aliases": [
+      "面条",
+      "面",
+      "拉面",
+      "面食"
+    ]
+  },
+  {
+    "id": "bread",
+    "name": "小麦面包",
+    "fdc_id": 172686,
+    "serving": 60,
+    "aliases": [
+      "面包",
+      "吐司",
+      "全麦面包"
+    ]
+  },
+  {
+    "id": "egg",
+    "name": "熟鸡蛋",
+    "fdc_id": 173424,
+    "serving": 50,
+    "aliases": [
+      "鸡蛋",
+      "煮鸡蛋",
+      "水煮蛋",
+      "水煮鸡蛋"
+    ]
+  },
+  {
+    "id": "milk",
+    "name": "低脂牛奶（2%）",
+    "fdc_id": 171267,
+    "serving": 250,
+    "aliases": [
+      "低脂奶",
+      "低脂牛奶",
+      "2%牛奶"
+    ]
+  },
+  {
+    "id": "yogurt",
+    "name": "原味低脂酸奶",
+    "fdc_id": 170886,
+    "serving": 150,
+    "aliases": [
+      "酸奶",
+      "无糖酸奶"
+    ]
+  },
+  {
+    "id": "tofu",
+    "name": "豆腐",
+    "fdc_id": 172475,
+    "serving": 100,
+    "aliases": [
+      "豆腐",
+      "嫩豆腐",
+      "老豆腐"
+    ]
+  },
+  {
+    "id": "chicken",
+    "name": "熟鸡胸肉",
+    "fdc_id": 171477,
+    "serving": 100,
+    "aliases": [
+      "鸡肉",
+      "鸡胸肉",
+      "烤鸡肉"
+    ]
+  },
+  {
+    "id": "pork",
+    "name": "熟猪里脊",
+    "fdc_id": 167905,
+    "serving": 100,
+    "aliases": [
+      "猪肉",
+      "猪里脊",
+      "里脊肉"
+    ]
+  },
+  {
+    "id": "beef",
+    "name": "熟牛肉",
+    "fdc_id": 172170,
+    "serving": 100,
+    "aliases": [
+      "牛肉",
+      "牛排"
+    ]
+  },
+  {
+    "id": "salmon",
+    "name": "熟三文鱼",
+    "fdc_id": 175168,
+    "serving": 100,
+    "aliases": [
+      "三文鱼",
+      "鲑鱼"
+    ]
+  },
+  {
+    "id": "shrimp",
+    "name": "熟虾仁",
+    "fdc_id": 171971,
+    "serving": 100,
+    "aliases": [
+      "虾",
+      "虾仁"
+    ]
+  },
+  {
+    "id": "banana",
+    "name": "香蕉",
+    "fdc_id": 173944,
+    "serving": 100,
+    "aliases": [
+      "香蕉"
+    ]
+  },
+  {
+    "id": "apple",
+    "name": "苹果",
+    "fdc_id": 171688,
+    "serving": 150,
+    "aliases": [
+      "苹果",
+      "苹果肉",
+      "红富士苹果",
+      "青苹果"
+    ]
+  },
+  {
+    "id": "orange",
+    "name": "橙子",
+    "fdc_id": 169097,
+    "serving": 150,
+    "aliases": [
+      "橙子",
+      "橙",
+      "甜橙",
+      "脐橙"
+    ]
+  },
+  {
+    "id": "grape",
+    "name": "葡萄",
+    "fdc_id": 174683,
+    "serving": 100,
+    "aliases": [
+      "葡萄",
+      "提子",
+      "青提",
+      "红提",
+      "黑提"
+    ]
+  },
+  {
+    "id": "strawberry",
+    "name": "草莓",
+    "fdc_id": 167762,
+    "serving": 150,
+    "aliases": [
+      "草莓"
+    ]
+  },
+  {
+    "id": "watermelon",
+    "name": "西瓜",
+    "fdc_id": 167765,
+    "serving": 200,
+    "aliases": [
+      "西瓜"
+    ]
+  },
+  {
+    "id": "potato",
+    "name": "煮土豆",
+    "fdc_id": 170438,
+    "serving": 150,
+    "aliases": [
+      "土豆",
+      "马铃薯"
+    ]
+  },
+  {
+    "id": "sweet_potato",
+    "name": "熟红薯",
+    "fdc_id": 168483,
+    "serving": 150,
+    "aliases": [
+      "红薯",
+      "番薯",
+      "地瓜"
+    ]
+  },
+  {
+    "id": "corn",
+    "name": "熟玉米粒",
+    "fdc_id": 169999,
+    "serving": 100,
+    "aliases": [
+      "玉米",
+      "玉米粒"
+    ]
+  },
+  {
+    "id": "broccoli",
+    "name": "熟西兰花",
+    "fdc_id": 169967,
+    "serving": 150,
+    "aliases": [
+      "西兰花",
+      "绿花菜"
+    ]
+  },
+  {
+    "id": "tomato",
+    "name": "番茄",
+    "fdc_id": 170457,
+    "serving": 150,
+    "aliases": [
+      "番茄",
+      "西红柿",
+      "小番茄",
+      "圣女果"
+    ]
+  },
+  {
+    "id": "cucumber",
+    "name": "黄瓜",
+    "fdc_id": 168409,
+    "serving": 150,
+    "aliases": [
+      "黄瓜"
+    ]
+  },
+  {
+    "id": "spinach",
+    "name": "熟菠菜",
+    "fdc_id": 168463,
+    "serving": 150,
+    "aliases": [
+      "菠菜"
+    ]
+  },
+  {
+    "id": "cabbage",
+    "name": "大白菜",
+    "fdc_id": 169979,
+    "serving": 150,
+    "aliases": [
+      "白菜",
+      "大白菜"
+    ]
+  },
+  {
+    "id": "mushroom",
+    "name": "蘑菇",
+    "fdc_id": 169251,
+    "serving": 100,
+    "aliases": [
+      "蘑菇",
+      "白蘑菇"
+    ]
+  },
+  {
+    "id": "carrot",
+    "name": "胡萝卜",
+    "fdc_id": 170393,
+    "serving": 100,
+    "aliases": [
+      "胡萝卜"
+    ]
+  },
+  {
+    "id": "avocado",
+    "name": "牛油果",
+    "fdc_id": 171705,
+    "serving": 100,
+    "aliases": [
+      "牛油果",
+      "鳄梨"
+    ]
+  },
+  {
+    "id": "peanut",
+    "name": "烤花生",
+    "fdc_id": 173806,
+    "serving": 20,
+    "aliases": [
+      "花生",
+      "花生米"
+    ]
+  },
+  {
+    "id": "almond",
+    "name": "杏仁",
+    "fdc_id": 170567,
+    "serving": 20,
+    "aliases": [
+      "杏仁"
+    ]
+  },
+  {
+    "id": "lentils",
+    "name": "熟扁豆",
+    "fdc_id": 172421,
+    "serving": 100,
+    "aliases": []
+  },
+  {
+    "id": "soy_milk",
+    "name": "豆浆",
+    "fdc_id": 172446,
+    "serving": 250,
+    "aliases": [
+      "豆浆"
+    ]
+  },
+  {
+    "id": "oil",
+    "name": "烹调油",
+    "fdc_id": 171411,
+    "serving": 5,
+    "aliases": [
+      "油",
+      "食用油",
+      "植物油"
+    ]
+  },
+  {
+    "id": "sugar",
+    "name": "白糖",
+    "fdc_id": 169655,
+    "serving": 5,
+    "aliases": [
+      "糖",
+      "白糖"
+    ]
+  },
+  {
+    "id": "soy_sauce",
+    "name": "酱油",
+    "fdc_id": 174277,
+    "serving": 10,
+    "aliases": [
+      "酱油"
+    ]
+  },
+  {
+    "id": "lettuce",
+    "name": "生菜",
+    "fdc_id": 169249,
+    "serving": 100,
+    "aliases": [
+      "生菜",
+      "莴苣"
+    ]
+  },
+  {
+    "id": "blueberry",
+    "name": "蓝莓",
+    "fdc_id": 171711,
+    "serving": 100,
+    "aliases": [
+      "蓝莓"
+    ]
+  },
+  {
+    "id": "bacon",
+    "name": "熟培根",
+    "fdc_id": 167914,
+    "serving": 30,
+    "aliases": [
+      "培根"
+    ]
+  },
+  {
+    "id": "cauliflower",
+    "name": "熟花菜",
+    "fdc_id": 170397,
+    "serving": 100,
+    "aliases": [
+      "花菜",
+      "菜花",
+      "花椰菜"
+    ]
+  },
+  {
+    "id": "brussels",
+    "name": "熟抱子甘蓝",
+    "fdc_id": 169971,
+    "serving": 100,
+    "aliases": [
+      "抱子甘蓝",
+      "球芽甘蓝"
+    ]
+  },
+  {
+    "id": "onion",
+    "name": "洋葱",
+    "fdc_id": 170000,
+    "serving": 50,
+    "aliases": [
+      "洋葱",
+      "红洋葱"
+    ]
+  },
+  {
+    "id": "cheese",
+    "name": "切达奶酪",
+    "fdc_id": 173414,
+    "serving": 20,
+    "aliases": [
+      "奶酪",
+      "芝士"
+    ]
+  },
+  {
+    "id": "kiwi",
+    "name": "猕猴桃",
+    "fdc_id": 168153,
+    "serving": 100,
+    "aliases": [
+      "奇异果",
+      "绿心猕猴桃"
+    ]
+  },
+  {
+    "id": "golden_kiwi",
+    "name": "黄心猕猴桃",
+    "fdc_id": 168211,
+    "serving": 100,
+    "aliases": [
+      "黄金奇异果"
+    ]
+  },
+  {
+    "id": "cherry",
+    "name": "樱桃",
+    "fdc_id": 171719,
+    "serving": 100,
+    "aliases": [
+      "车厘子",
+      "甜樱桃"
+    ]
+  },
+  {
+    "id": "pear",
+    "name": "梨",
+    "fdc_id": 167776,
+    "serving": 150,
+    "aliases": [
+      "雪梨",
+      "香梨",
+      "鸭梨",
+      "梨子"
+    ]
+  },
+  {
+    "id": "peach",
+    "name": "桃",
+    "fdc_id": 169928,
+    "serving": 150,
+    "aliases": [
+      "桃子",
+      "黄桃",
+      "鲜桃"
+    ]
+  },
+  {
+    "id": "nectarine",
+    "name": "油桃",
+    "fdc_id": 169914,
+    "serving": 150,
+    "aliases": [
+      "鲜油桃"
+    ]
+  },
+  {
+    "id": "apricot",
+    "name": "杏",
+    "fdc_id": 171697,
+    "serving": 100,
+    "aliases": [
+      "杏子"
+    ]
+  },
+  {
+    "id": "mango",
+    "name": "芒果",
+    "fdc_id": 169910,
+    "serving": 100,
+    "aliases": [
+      "鲜芒果"
+    ]
+  },
+  {
+    "id": "litchi",
+    "name": "荔枝",
+    "fdc_id": 169086,
+    "serving": 100,
+    "aliases": []
+  },
+  {
+    "id": "longan",
+    "name": "鲜龙眼",
+    "fdc_id": 169089,
+    "serving": 100,
+    "aliases": [
+      "龙眼",
+      "鲜桂圆"
+    ]
+  },
+  {
+    "id": "papaya",
+    "name": "木瓜",
+    "fdc_id": 169926,
+    "serving": 150,
+    "aliases": [
+      "番木瓜"
+    ]
+  },
+  {
+    "id": "plum",
+    "name": "李子",
+    "fdc_id": 169949,
+    "serving": 100,
+    "aliases": [
+      "布林",
+      "鲜李子"
+    ]
+  },
+  {
+    "id": "pineapple",
+    "name": "菠萝",
+    "fdc_id": 169124,
+    "serving": 150,
+    "aliases": [
+      "凤梨"
+    ]
+  },
+  {
+    "id": "guava",
+    "name": "番石榴",
+    "fdc_id": 173044,
+    "serving": 150,
+    "aliases": [
+      "芭乐"
+    ]
+  },
+  {
+    "id": "persimmon",
+    "name": "柿子",
+    "fdc_id": 169941,
+    "serving": 150,
+    "aliases": [
+      "鲜柿子"
+    ]
+  },
+  {
+    "id": "pomegranate",
+    "name": "石榴",
+    "fdc_id": 169134,
+    "serving": 100,
+    "aliases": []
+  },
+  {
+    "id": "raspberry",
+    "name": "树莓",
+    "fdc_id": 167755,
+    "serving": 100,
+    "aliases": [
+      "覆盆子"
+    ]
+  },
+  {
+    "id": "blackberry",
+    "name": "黑莓",
+    "fdc_id": 173946,
+    "serving": 100,
+    "aliases": []
+  },
+  {
+    "id": "cantaloupe",
+    "name": "哈密瓜",
+    "fdc_id": 169092,
+    "serving": 150,
+    "aliases": [
+      "甜瓜"
+    ]
+  },
+  {
+    "id": "honeydew",
+    "name": "蜜瓜",
+    "fdc_id": 169911,
+    "serving": 150,
+    "aliases": [
+      "白兰瓜"
+    ]
+  },
+  {
+    "id": "fig",
+    "name": "鲜无花果",
+    "fdc_id": 173021,
+    "serving": 100,
+    "aliases": [
+      "无花果"
+    ]
+  },
+  {
+    "id": "date_fruit",
+    "name": "椰枣",
+    "fdc_id": 168191,
+    "serving": 30,
+    "aliases": []
+  },
+  {
+    "id": "coconut",
+    "name": "鲜椰肉",
+    "fdc_id": 170169,
+    "serving": 50,
+    "aliases": [
+      "椰肉",
+      "椰子肉"
+    ]
+  },
+  {
+    "id": "lemon",
+    "name": "柠檬去皮",
+    "fdc_id": 167746,
+    "serving": 50,
+    "aliases": [
+      "柠檬"
+    ]
+  },
+  {
+    "id": "mandarin",
+    "name": "橘子",
+    "fdc_id": 169105,
+    "serving": 100,
+    "aliases": [
+      "橘",
+      "桔子",
+      "柑橘",
+      "蜜橘",
+      "砂糖橘",
+      "橘子瓣"
+    ]
+  },
+  {
+    "id": "grapefruit",
+    "name": "葡萄柚",
+    "fdc_id": 173033,
+    "serving": 150,
+    "aliases": [
+      "西柚"
+    ]
+  },
+  {
+    "id": "jackfruit",
+    "name": "菠萝蜜",
+    "fdc_id": 174687,
+    "serving": 100,
+    "aliases": []
+  },
+  {
+    "id": "passion_fruit",
+    "name": "百香果",
+    "fdc_id": 169108,
+    "serving": 50,
+    "aliases": [
+      "西番莲"
+    ]
+  },
+  {
+    "id": "starfruit",
+    "name": "杨桃",
+    "fdc_id": 171715,
+    "serving": 100,
+    "aliases": []
+  },
+  {
+    "id": "cranberry",
+    "name": "鲜蔓越莓",
+    "fdc_id": 171722,
+    "serving": 50,
+    "aliases": [
+      "蔓越莓"
+    ]
+  },
+  {
+    "id": "mulberry",
+    "name": "桑葚",
+    "fdc_id": 169913,
+    "serving": 100,
+    "aliases": [
+      "桑椹"
+    ]
+  },
+  {
+    "id": "durian",
+    "name": "榴莲",
+    "fdc_id": 168192,
+    "serving": 100,
+    "aliases": [
+      "榴莲肉"
+    ]
+  },
+  {
+    "id": "milk_1",
+    "name": "低脂牛奶（1%）",
+    "fdc_id": 170872,
+    "serving": 250,
+    "aliases": [
+      "1%牛奶"
+    ]
+  },
+  {
+    "id": "skim_milk",
+    "name": "脱脂牛奶",
+    "fdc_id": 171269,
+    "serving": 250,
+    "aliases": [
+      "脱脂奶",
+      "零脂牛奶"
+    ]
+  },
+  {
+    "id": "yogurt_whole",
+    "name": "全脂原味酸奶",
+    "fdc_id": 171284,
+    "serving": 150,
+    "aliases": [
+      "全脂酸奶"
+    ]
+  },
+  {
+    "id": "greek_nonfat",
+    "name": "脱脂希腊酸奶",
+    "fdc_id": 170894,
+    "serving": 150,
+    "aliases": [
+      "无脂希腊酸奶"
+    ]
+  },
+  {
+    "id": "greek_lowfat",
+    "name": "低脂希腊酸奶",
+    "fdc_id": 170903,
+    "serving": 150,
+    "aliases": []
+  },
+  {
+    "id": "greek_whole",
+    "name": "全脂希腊酸奶",
+    "fdc_id": 171304,
+    "serving": 150,
+    "aliases": [
+      "希腊酸奶"
+    ]
+  },
+  {
+    "id": "mozzarella",
+    "name": "马苏里拉奶酪",
+    "fdc_id": 170845,
+    "serving": 30,
+    "aliases": [
+      "马苏里拉芝士",
+      "马苏里拉"
+    ]
+  },
+  {
+    "id": "parmesan",
+    "name": "帕尔马干酪",
+    "fdc_id": 170848,
+    "serving": 20,
+    "aliases": [
+      "帕尔马奶酪",
+      "帕尔马芝士"
+    ]
+  },
+  {
+    "id": "cream",
+    "name": "淡奶油",
+    "fdc_id": 170859,
+    "serving": 20,
+    "aliases": [
+      "稀奶油",
+      "重奶油"
+    ]
+  },
+  {
+    "id": "butter",
+    "name": "无盐黄油",
+    "fdc_id": 173430,
+    "serving": 10,
+    "aliases": [
+      "黄油"
+    ]
+  },
+  {
+    "id": "egg_fried",
+    "name": "煎鸡蛋",
+    "fdc_id": 173423,
+    "serving": 50,
+    "aliases": [
+      "煎蛋",
+      "荷包煎蛋"
+    ]
+  },
+  {
+    "id": "egg_scrambled",
+    "name": "炒鸡蛋",
+    "fdc_id": 172187,
+    "serving": 100,
+    "aliases": [
+      "炒蛋"
+    ]
+  },
+  {
+    "id": "egg_poached",
+    "name": "水煮荷包蛋",
+    "fdc_id": 172186,
+    "serving": 50,
+    "aliases": [
+      "水波蛋"
+    ]
+  },
+  {
+    "id": "egg_white",
+    "name": "生鸡蛋蛋白",
+    "fdc_id": 172183,
+    "serving": 30,
+    "aliases": [
+      "蛋白",
+      "鸡蛋白",
+      "生蛋白"
+    ]
+  },
+  {
+    "id": "egg_yolk",
+    "name": "生鸡蛋蛋黄",
+    "fdc_id": 172184,
+    "serving": 20,
+    "aliases": [
+      "蛋黄",
+      "鸡蛋黄",
+      "生蛋黄"
+    ]
+  },
+  {
+    "id": "duck_egg",
+    "name": "生鸭蛋",
+    "fdc_id": 172189,
+    "serving": 70,
+    "aliases": [
+      "鸭蛋"
+    ]
+  },
+  {
+    "id": "quail_egg",
+    "name": "生鹌鹑蛋",
+    "fdc_id": 172191,
+    "serving": 10,
+    "aliases": [
+      "鹌鹑蛋"
+    ]
+  },
+  {
+    "id": "goose_egg",
+    "name": "生鹅蛋",
+    "fdc_id": 172190,
+    "serving": 100,
+    "aliases": [
+      "鹅蛋"
+    ]
+  },
+  {
+    "id": "duck",
+    "name": "熟去皮鸭肉",
+    "fdc_id": 172411,
+    "serving": 100,
+    "aliases": [
+      "鸭肉",
+      "烤鸭肉"
+    ]
+  },
+  {
+    "id": "goose",
+    "name": "熟去皮鹅肉",
+    "fdc_id": 172414,
+    "serving": 100,
+    "aliases": [
+      "鹅肉"
+    ]
+  },
+  {
+    "id": "turkey",
+    "name": "熟去皮火鸡肉",
+    "fdc_id": 171481,
+    "serving": 100,
+    "aliases": [
+      "火鸡肉"
+    ]
+  },
+  {
+    "id": "chicken_thigh",
+    "name": "烤去皮鸡腿肉",
+    "fdc_id": 172388,
+    "serving": 100,
+    "aliases": [
+      "鸡腿肉",
+      "去皮鸡腿"
+    ]
+  },
+  {
+    "id": "chicken_wing",
+    "name": "烤带皮鸡翅",
+    "fdc_id": 173630,
+    "serving": 100,
+    "aliases": [
+      "鸡翅",
+      "烤鸡翅"
+    ]
+  },
+  {
+    "id": "pork_belly_raw",
+    "name": "生五花肉",
+    "fdc_id": 167812,
+    "serving": 100,
+    "aliases": [
+      "五花肉"
+    ]
+  },
+  {
+    "id": "cod",
+    "name": "熟鳕鱼",
+    "fdc_id": 175178,
+    "serving": 100,
+    "aliases": [
+      "鳕鱼"
+    ]
+  },
+  {
+    "id": "tilapia",
+    "name": "熟罗非鱼",
+    "fdc_id": 175177,
+    "serving": 100,
+    "aliases": [
+      "罗非鱼"
+    ]
+  },
+  {
+    "id": "tuna_canned",
+    "name": "水浸金枪鱼罐头沥干",
+    "fdc_id": 173709,
+    "serving": 100,
+    "aliases": [
+      "金枪鱼罐头",
+      "水浸金枪鱼"
+    ]
+  },
+  {
+    "id": "mackerel",
+    "name": "熟鲭鱼",
+    "fdc_id": 171994,
+    "serving": 100,
+    "aliases": [
+      "鲭鱼",
+      "青花鱼"
+    ]
+  },
+  {
+    "id": "scallop",
+    "name": "蒸扇贝",
+    "fdc_id": 167742,
+    "serving": 100,
+    "aliases": [
+      "扇贝",
+      "鲜贝"
+    ]
+  },
+  {
+    "id": "squid_raw",
+    "name": "生鱿鱼",
+    "fdc_id": 174223,
+    "serving": 100,
+    "aliases": [
+      "鱿鱼"
+    ]
+  },
+  {
+    "id": "octopus",
+    "name": "熟章鱼",
+    "fdc_id": 174249,
+    "serving": 100,
+    "aliases": [
+      "章鱼",
+      "八爪鱼"
+    ]
+  },
+  {
+    "id": "chicken_liver",
+    "name": "煮鸡肝",
+    "fdc_id": 171061,
+    "serving": 100,
+    "aliases": [
+      "鸡肝"
+    ]
+  },
+  {
+    "id": "pork_liver",
+    "name": "炖猪肝",
+    "fdc_id": 167863,
+    "serving": 100,
+    "aliases": [
+      "猪肝"
+    ]
+  },
+  {
+    "id": "beef_liver",
+    "name": "炖牛肝",
+    "fdc_id": 168626,
+    "serving": 100,
+    "aliases": [
+      "牛肝"
+    ]
+  },
+  {
+    "id": "rabbit",
+    "name": "烤兔肉",
+    "fdc_id": 172522,
+    "serving": 100,
+    "aliases": [
+      "兔肉"
+    ]
+  },
+  {
+    "id": "whole_milk",
+    "name": "全脂牛奶",
+    "fdc_id": 171265,
+    "serving": 250,
+    "aliases": [
+      "牛奶",
+      "纯牛奶",
+      "奶",
+      "全脂奶"
+    ]
+  },
+  {
+    "id": "dried_longan",
+    "name": "干桂圆肉",
+    "fdc_id": 169907,
+    "serving": 20,
+    "aliases": [
+      "干桂圆",
+      "桂圆干",
+      "桂圆肉"
+    ]
+  }
+]

@@ -8,3 +8,9 @@ tools/usda-sr.zip
 tools/test-food.jpg
 *.part
 .DS_Store
+iOS/.native/
+iOS/MealTrace.xcodeproj/xcuserdata/
+*.xcuserstate
+*.mobileprovision
+__pycache__/
+*.pyc

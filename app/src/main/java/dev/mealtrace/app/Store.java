@@ -229,11 +229,12 @@ final class Store extends SQLiteOpenHelper {
         coverage.put(e.getKey(), e.getValue());
     return new JSONObject()
         .put("schema", 1)
-        .put("app", "MealTrace 0.1.0")
+        .put("app", "MealTrace " + BuildConfig.VERSION_NAME)
         .put("exported_at", System.currentTimeMillis())
         .put("meals", a)
         .put("coverage", coverage)
         .put("weights", weights())
+        .put("custom_foods", new JSONArray(prefs.context.getSharedPreferences("custom_foods", Context.MODE_PRIVATE).getString("items", "[]")))
         .put("note", "照片热量是估算；未记录不代表零摄入。未导出照片和路径。");
   }
 }

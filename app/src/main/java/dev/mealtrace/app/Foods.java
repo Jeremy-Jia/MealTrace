@@ -7,13 +7,25 @@ import org.json.*;
 
 final class Foods {
   final LinkedHashMap<String, JSONObject> foods = new LinkedHashMap<>();
+  final HashMap<String, String> names = new HashMap<>();
+  final SharedPreferences customPrefs;
 
   Foods(Context c) throws Exception {
+    customPrefs = c.getSharedPreferences("custom_foods", Context.MODE_PRIVATE);
     try (var in = c.getAssets().open("foods.json")) {
       JSONArray a =
           new JSONObject(new String(Io.read(in), StandardCharsets.UTF_8)).getJSONArray("foods");
-      for (int i = 0; i < a.length(); i++)
-        foods.put(a.getJSONObject(i).getString("id"), a.getJSONObject(i));
+      for (int i = 0; i < a.length(); i++) {
+        JSONObject food = a.getJSONObject(i);
+        foods.put(food.getString("id"), food);
+        index(food);
+      }
+      JSONArray custom = new JSONArray(customPrefs.getString("items", "[]"));
+      for (int i = 0; i < custom.length(); i++) {
+        JSONObject food = custom.getJSONObject(i);
+        foods.put(food.getString("id"), food);
+        index(food);
+      }
     }
   }
 
@@ -23,70 +35,83 @@ final class Foods {
         + "5}。oil是额外烹调油克数。没有食物则输出{\"food\":false}。不要列出照片以外的食物。";
   }
 
+  static String normalized(String name) {
+    return name.replace("切片", "")
+        .replace("丁", "")
+        .replace("块", "")
+        .replace("粒", "")
+        .replace("片", "")
+        .replace("丝", "")
+        .trim()
+        .toLowerCase(Locale.ROOT);
+  }
+
+  void index(JSONObject food) {
+    names.put(normalized(food.optString("name")), food.optString("id"));
+    names.put(food.optString("id").toLowerCase(Locale.ROOT), food.optString("id"));
+    JSONArray aliases = food.optJSONArray("aliases");
+    if (aliases != null)
+      for (int i = 0; i < aliases.length(); i++)
+        names.put(normalized(aliases.optString(i)), food.optString("id"));
+  }
+
   String match(String name) {
-    name =
-        name.replace("丁", "")
-            .replace("切片", "")
-            .replace("块", "")
-            .replace("粒", "")
-            .replace("片", "")
-            .replace("丝", "");
-    String normalized = name.trim().toLowerCase(Locale.ROOT);
-    for (var e : foods.entrySet())
-      if (e.getValue().optString("name").equals(name) || e.getKey().equals(normalized))
-        return e.getKey();
-    String[][] aliases = {
-      {"rice", "米饭", "白饭", "白米", "白米饭"},
-      {"brown_rice", "糙米", "糙米饭"},
-      {"noodles", "面条", "面", "拉面", "面食"},
-      {"bread", "面包", "吐司", "全麦面包"},
-      {"egg", "鸡蛋", "炒蛋", "煮鸡蛋", "水煮蛋", "炒鸡蛋", "煎蛋"},
-      {"milk", "牛奶", "纯牛奶", "奶"},
-      {"yogurt", "酸奶", "无糖酸奶"},
-      {"tofu", "豆腐", "嫩豆腐", "老豆腐"},
-      {"chicken", "鸡肉", "鸡胸肉", "烤鸡肉"},
-      {"pork", "猪肉", "猪里脊", "里脊肉"},
-      {"beef", "牛肉", "牛排"},
-      {"salmon", "三文鱼", "鲑鱼"},
-      {"shrimp", "虾", "虾仁"},
-      {"banana", "香蕉"},
-      {"apple", "苹果"},
-      {"orange", "橙子", "橘子", "橘", "柑橘"},
-      {"grape", "葡萄"},
-      {"strawberry", "草莓"},
-      {"watermelon", "西瓜"},
-      {"potato", "土豆", "马铃薯"},
-      {"sweet_potato", "红薯", "番薯", "地瓜"},
-      {"corn", "玉米", "玉米粒"},
-      {"broccoli", "西兰花", "绿花菜"},
-      {"tomato", "番茄", "西红柿", "小番茄", "圣女果"},
-      {"cucumber", "黄瓜"},
-      {"spinach", "菠菜"},
-      {"cabbage", "白菜", "大白菜"},
-      {"mushroom", "蘑菇", "白蘑菇"},
-      {"carrot", "胡萝卜"},
-      {"avocado", "牛油果", "鳄梨"},
-      {"peanut", "花生", "花生米"},
-      {"almond", "杏仁"},
-      {"soy_milk", "豆浆"},
-      {"oil", "油", "食用油", "植物油"},
-      {"sugar", "糖", "白糖"},
-      {"soy_sauce", "酱油"},
-      {"lettuce", "生菜", "莴苣"},
-      {"blueberry", "蓝莓"},
-      {"bacon", "培根"},
-      {"cauliflower", "花菜", "菜花", "花椰菜"},
-      {"brussels", "抱子甘蓝", "球芽甘蓝"},
-      {"onion", "洋葱", "红洋葱"},
-      {"cheese", "奶酪", "芝士"}
-    };
-    for (String[] a : aliases)
-      for (int i = 1; i < a.length; i++) if (a[i].equals(normalized)) return a[0];
-    return "unknown";
+    return names.getOrDefault(normalized(name), "unknown");
+  }
+
+  List<String> search(String query, String category, boolean all) {
+    String q = query.trim().toLowerCase(Locale.ROOT);
+    ArrayList<String> result = new ArrayList<>();
+    for (var entry : foods.entrySet()) {
+      JSONObject f = entry.getValue();
+      if (!all && !f.optBoolean("common", true))
+        continue;
+      if (!category.equals("全部") && !category.equals(f.optString("category")))
+        continue;
+      String text =
+          f.optString("name") + " " + f.optString("description") + " " + f.optJSONArray("aliases");
+      if (q.isEmpty() || text.toLowerCase(Locale.ROOT).contains(q))
+        result.add(entry.getKey());
+    }
+    return result;
+  }
+
+  JSONObject saveCustom(String name, double kcal, double protein, double carbs, double fat,
+      double serving) throws Exception {
+    name = name.trim();
+    if (name.isBlank() || name.length() > 80 || names.containsKey(normalized(name)))
+      throw new IllegalArgumentException("名称为空、过长或已存在；请用品牌或配方名称区分");
+    if (!Double.isFinite(kcal) || kcal < 0 || kcal > 1000 || !Double.isFinite(serving)
+        || serving < 1 || serving > 2000)
+      throw new IllegalArgumentException("请检查每100克能量与默认份量");
+    for (double value : new double[] {protein, carbs, fat})
+      if (!Double.isFinite(value) || value < 0 || value > 100)
+        throw new IllegalArgumentException("三大营养素每100克应在0～100克之间");
+    if (protein + carbs + fat > 105)
+      throw new IllegalArgumentException("三大营养素合计超过每100克，请核对单位");
+    JSONObject f = new JSONObject()
+                       .put("id", "custom_" + UUID.randomUUID())
+                       .put("name", name)
+                       .put("serving", serving)
+                       .put("kcal", kcal)
+                       .put("protein", protein)
+                       .put("carbs", carbs)
+                       .put("fat", fat)
+                       .put("category", "自定义")
+                       .put("common", true)
+                       .put("source", "用户填写的营养数据");
+    JSONArray saved = new JSONArray(customPrefs.getString("items", "[]"));
+    saved.put(f);
+    if (!customPrefs.edit().putString("items", saved.toString()).commit())
+      throw new java.io.IOException("自定义食物保存失败");
+    foods.put(f.getString("id"), f);
+    index(f);
+    return f;
   }
 
   JSONObject calculate(JSONObject raw, boolean manual) throws Exception {
-    if (!raw.has("food") || !raw.getBoolean("food")) return new JSONObject().put("food", false);
+    if (!raw.has("food") || !raw.getBoolean("food"))
+      return new JSONObject().put("food", false);
     JSONArray input = raw.getJSONArray("items"), items = new JSONArray();
     if (input.length() == 0 || input.length() > 15)
       throw new IllegalArgumentException("无法可靠识别食材，请手动补记");
@@ -94,14 +119,13 @@ final class Foods {
     boolean unknown = false;
     for (int i = 0; i < input.length(); i++) {
       JSONObject v = input.getJSONObject(i),
-          f = foods.get(v.has("id") ? v.optString("id") : match(v.optString("name")));
+                 f = foods.get(v.has("id") ? v.optString("id") : match(v.optString("name")));
       double g = v.getDouble("grams");
       if (!Double.isFinite(g) || g <= 0 || g > 2000)
         throw new IllegalArgumentException("食物份量异常，请修正");
       if (f == null) {
         unknown = true;
-        items.put(
-            new JSONObject()
+        items.put(new JSONObject()
                 .put("id", "unknown")
                 .put("name", v.optString("name", "未匹配食物"))
                 .put("grams", g));
@@ -124,7 +148,8 @@ final class Foods {
       kcal += f.getDouble("kcal") * oil / 100;
       fat += oil;
     }
-    if (kcal > 5000 || grams > 4000) throw new IllegalArgumentException("总份量异常，请拆分或手动补记");
+    if (kcal > 5000 || grams > 4000)
+      throw new IllegalArgumentException("总份量异常，请拆分或手动补记");
     return new JSONObject()
         .put("food", true)
         .put("name", raw.optString("name", "餐食"))
@@ -136,8 +161,9 @@ final class Foods {
         .put("carbs", carbs)
         .put("fat", fat)
         .put("unknown", unknown)
-        .put("source", "USDA SR Legacy; 食材近似匹配")
+        .put("source", "USDA SR Legacy / 用户填写; 逐项近似参考")
         .put("method", manual ? "用户份量 × 数据库" : "本地视觉估计份量 × 数据库")
-        .put("uncertainty", "上下界为产品估算范围，不是经过校准的统计置信区间；油、烹饪方式和混合菜仍可能漏估。");
+        .put("uncertainty",
+            "上下界为产品估算范围，不是经过校准的统计置信区间；油、烹饪方式和混合菜仍可能漏估。");
   }
 }

@@ -1,0 +1,26 @@
+MealTrace / 食迹 iOS. Original application code: MIT (repository LICENSE).
+llama.cpp / GGML: MIT, pinned 547208dca250ceb3e4c8615598d043f2b602a527.
+Native libraries are statically linked, with Metal shader source embedded.
+Dependencies include stb (public domain / MIT), miniaudio (public domain / MIT),
+xxHash (BSD), SHA-256 (Unlicense), rotate-bits (MIT), and Sheredom headers
+(Unlicense). Original dependency license texts are supplied in Licenses.
+No subprocess runner and no Google ML Kit are used in the iOS application.
+Candidate image classification uses Apple's on-device Vision framework.
+
+Vision weights: Qwen3.5-2B, Qwen team / Alibaba, Apache 2.0.
+Source: https://huggingface.co/Qwen/Qwen3.5-2B
+Unsloth GGUF revision f6d5376be1edb4d416d56da11e5397a961aca8ae.
+Weights are downloaded or imported separately, with pinned SHA-256 verification.
+This general-purpose model does not reliably measure food mass or hidden oil.
+
+Nutrient data: USDA FoodData Central SR Legacy April 2018.
+https://fdc.nal.usda.gov/download-datasets/
+FDC IDs and original descriptions remain in foods.json, along with Chinese names.
+The full 7,793-entry SR Legacy catalog is supplied. 113 entries have curated
+Chinese names and aliases; other entries retain their original English names.
+This remains an ingredient/reference catalog, not a complete Chinese recipe database.
+Personal custom nutrient values are user-provided and are not USDA records.
+
+Debug-only fixture: Nutrition5k example_plate.jpg, Google Research, CC BY 4.0.
+Resized to 640 pixels; original attribution supplied in Licenses.
+https://github.com/google-research-datasets/Nutrition5k

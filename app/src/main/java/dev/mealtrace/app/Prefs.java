@@ -4,8 +4,10 @@ import android.content.*;
 
 final class Prefs {
   final SharedPreferences p;
+  final Context context;
 
   Prefs(Context c) {
+    context = c.getApplicationContext();
     p = c.getSharedPreferences("mealtrace", Context.MODE_PRIVATE);
   }
 

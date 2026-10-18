@@ -725,22 +725,8 @@ public final class MainActivity extends Activity {
           button(
               "＋ 选择食材",
               () -> {
-                String[] keys = catalog.foods.keySet().toArray(new String[0]);
-                String[] labels = new String[keys.length];
-                for (int i = 0; i < keys.length; i++)
-                  labels[i] = catalog.foods.get(keys[i]).optString("name");
-                new AlertDialog.Builder(this)
-                    .setTitle("添加食材")
-                    .setItems(
-                        labels,
-                        (v, index) ->
-                            foodInput(
-                                list,
-                                inputs,
-                                catalog,
-                                keys[index],
-                                catalog.foods.get(keys[index]).optDouble("serving")))
-                    .show();
+                chooseFood(catalog, id -> foodInput(list, inputs, catalog, id,
+                    catalog.foods.get(id).optDouble("serving")));
               });
       add(c, addFood);
       gap(c, 10);
@@ -813,7 +799,129 @@ public final class MainActivity extends Activity {
     }
   }
 
-  static class FoodInput {
+  void chooseFood(Foods catalog, java.util.function.Consumer<String> choose) {
+      LinearLayout c = column();
+      pad(c, 16);
+      EditText search = field("名称、中文别名或英文关键词", "", false);
+      add(c, search);
+      Spinner category = new Spinner(this);
+      category.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+          new String[] {"全部", "水果", "肉类", "蛋类", "奶类", "水产", "主食", "蔬菜", "豆类",
+              "坚果种子", "饮品", "调味", "油脂", "自定义"}));
+      add(c, category);
+      CheckBox all = new CheckBox(this);
+      all.setText("包含 USDA 全部条目（英文原名）");
+      add(c, all);
+      TextView count = text("", 12, MUTED, false);
+      add(c, count);
+      ListView list = new ListView(this);
+      c.addView(list, new LinearLayout.LayoutParams(-1, dp(320)));
+      ArrayList<String> ids = new ArrayList<>();
+      ArrayAdapter<String> adapter =
+          new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
+      list.setAdapter(adapter);
+      AlertDialog dialog = new AlertDialog.Builder(this)
+                               .setTitle("选择食材")
+                               .setView(c)
+                               .setNegativeButton("关闭", null)
+                               .create();
+      Runnable refresh = () -> {
+        List<String> result = catalog.search(
+            search.getText().toString(), category.getSelectedItem().toString(), all.isChecked());
+        ids.clear();
+        ids.addAll(result.subList(0, Math.min(150, result.size())));
+        adapter.clear();
+        for (String id : ids) {
+          JSONObject f = catalog.foods.get(id);
+          adapter.add(f.optString("name") + "\n每100克 " + Nutrition.round(f.optDouble("kcal"))
+              + " kcal · " + f.optString("category") + " · "
+              + f.optString("source", "USDA 食材参考"));
+        }
+        count.setText(result.size() + " 个匹配，显示前150个；更多可缩小搜索范围");
+        adapter.notifyDataSetChanged();
+      };
+      search.addTextChangedListener(new android.text.TextWatcher() {
+        public void beforeTextChanged(CharSequence t, int start, int count, int after) {}
+        public void onTextChanged(CharSequence t, int start, int before, int count) {
+          refresh.run();
+        }
+        public void afterTextChanged(android.text.Editable t) {}
+      });
+      category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+          refresh.run();
+        }
+        public void onNothingSelected(AdapterView<?> parent) {}
+      });
+      all.setOnCheckedChangeListener((v, checked) -> refresh.run());
+      list.setOnItemClickListener((parent, view, position, id) -> {
+        choose.accept(ids.get(position));
+        dialog.dismiss();
+      });
+      add(c,
+          button(
+              "＋ 其他／自定义食物", () -> customFood(catalog, search.getText().toString(), id -> {
+                choose.accept(id);
+                dialog.dismiss();
+              })));
+      add(c,
+          text("未匹配食物可以按包装营养表添加；选近似食材时请核对生熟、配方与品牌。", 11, MUTED,
+              false));
+      dialog.show();
+      refresh.run();
+    }
+
+    void customFood(Foods catalog, String initial, java.util.function.Consumer<String> choose) {
+      LinearLayout c = column();
+      pad(c, 20);
+      add(c, text("全部按每100克填写；按100毫升标注时请先用实际密度换算。", 12, MUTED, false));
+      EditText name = field("品牌、名称或自制配方", initial, false);
+      add(c, name);
+      Spinner unit = new Spinner(this);
+      unit.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+          new String[] {"能量单位：kcal 千卡", "能量单位：kJ 千焦"}));
+      add(c, unit);
+      EditText energy = field("每100克能量（必填）", "", true);
+      add(c, energy);
+      EditText protein = field("每100克蛋白质 g（必填，可为0）", "", true);
+      add(c, protein);
+      EditText carbs = field("每100克碳水化合物 g（必填，可为0）", "", true);
+      add(c, carbs);
+      EditText fat = field("每100克脂肪 g（必填，可为0）", "", true);
+      add(c, fat);
+      add(c, text("默认一份克数", 12, MUTED, false));
+      EditText serving = field("一份克数", "100", true);
+      add(c, serving);
+      add(c,
+          text("从包装、可靠数据或已知配方填写，不能把整包数据直接当作每100克。保存后标记为用户填写"
+               + "，供以后复用。",
+              11, MUTED, false));
+      AlertDialog dialog = new AlertDialog.Builder(this)
+                               .setTitle("自定义食物")
+                               .setView(wrap(c))
+                               .setNegativeButton("取消", null)
+                               .setPositiveButton("保存并选用", null)
+                               .create();
+      dialog.setOnShowListener(v -> dialog.getButton(-1).setOnClickListener(button -> {
+        try {
+          double e = Double.parseDouble(energy.getText().toString());
+          if (unit.getSelectedItemPosition() == 1)
+            e /= 4.184;
+          JSONObject f = catalog.saveCustom(name.getText().toString(), e,
+              Double.parseDouble(protein.getText().toString()),
+              Double.parseDouble(carbs.getText().toString()),
+              Double.parseDouble(fat.getText().toString()),
+              Double.parseDouble(serving.getText().toString()));
+          choose.accept(f.getString("id"));
+          dialog.dismiss();
+        } catch (Exception ex) {
+          toast(ex.getMessage() == null ? "请填写完整的每100克营养数据" : ex.getMessage());
+        }
+      }));
+      dialog.show();
+    }
+
+    static class FoodInput {
     String id;
     EditText grams;
 
