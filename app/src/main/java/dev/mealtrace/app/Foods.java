@@ -14,7 +14,7 @@ final class Foods {
     customPrefs = c.getSharedPreferences("custom_foods", Context.MODE_PRIVATE);
     try (var in = c.getAssets().open("foods.json")) {
       JSONArray a =
-          new JSONObject(new String(Io.read(in), StandardCharsets.UTF_8)).getJSONArray("foods");
+          new JSONObject(new String(Io.read(in, 8000000), StandardCharsets.UTF_8)).getJSONArray("foods");
       for (int i = 0; i < a.length(); i++) {
         JSONObject food = a.getJSONObject(i);
         foods.put(food.getString("id"), food);

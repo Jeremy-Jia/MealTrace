@@ -30,6 +30,14 @@ public final class Verification extends Instrumentation {
 
   @Override
   public void onStart() {
+    if (mode.equals("catalog")) {
+      catalogFixture();
+      return;
+    }
+    if (mode.equals("catalog-ui")) {
+      catalogUiFixture();
+      return;
+    }
     if (!mode.equals("verify")) {
       backgroundFixture();
       return;
@@ -193,6 +201,169 @@ public final class Verification extends Instrumentation {
               ? Activity.RESULT_OK
               : Activity.RESULT_CANCELED,
           out);
+    }
+  }
+
+  void catalogFixture() {
+    Context c = getTargetContext();
+    String preferenceName = "verification-catalog-" + UUID.randomUUID();
+    Context isolated = new ContextWrapper(c) {
+      @Override
+      public Context getApplicationContext() { return this; }
+
+      @Override
+      public SharedPreferences getSharedPreferences(String name, int mode) {
+        return super.getSharedPreferences(name.equals("custom_foods") ? preferenceName : name, mode);
+      }
+    };
+    Bundle out = new Bundle();
+    JSONObject report = new JSONObject();
+    Map<String, ?> originalCustom = c.getSharedPreferences("custom_foods", Context.MODE_PRIVATE).getAll();
+    Map<String, ?> originalSettings = new Prefs(c).p.getAll();
+    try {
+      Foods foods = new Foods(isolated);
+      check(foods.foods.size() == 7793, "full 7793-entry offline catalog loaded on device");
+      check(foods.foods.values().stream().filter(f -> f.optBoolean("common")).count() == 113,
+          "113 curated Chinese entries loaded");
+      check(foods.match("车厘子").equals("cherry"), "cherry alias matches");
+      check(foods.match("奇异果").equals("kiwi"), "kiwi alias matches");
+      check(foods.match("番茄丁").equals("tomato"), "ingredient shape normalization matches");
+      check(foods.match("橘子").equals("mandarin") && foods.match("橙子").equals("orange"),
+          "mandarin and orange are distinguished");
+      check(foods.match("煎蛋").equals("egg_fried") && foods.match("水煮蛋").equals("egg"),
+          "fried and boiled egg references are distinguished");
+      check(foods.match("牛奶").equals("whole_milk") && foods.match("低脂奶").equals("milk")
+          && foods.match("脱脂奶").equals("skim_milk"), "milk fat variants are distinguished");
+      check(foods.match("看不清的混合菜").equals("unknown"), "unknown foods remain unknown");
+      check(foods.search("车厘子", "水果", false).contains("cherry"), "Chinese alias search works");
+      check(foods.search("", "水果", false).stream()
+          .allMatch(id -> foods.foods.get(id).optString("category").equals("水果")),
+          "fruit category excludes other foods");
+      check(foods.search("cod", "水产", true).size() > 3, "full English catalog search works");
+      JSONObject custom = foods.saveCustom("验证专用包装酸奶", 80, 5, 10, 2, 120);
+      String id = custom.getString("id");
+      check(foods.search("", "自定义", false).contains(id), "custom food appears in personal category");
+      Foods reloaded = new Foods(isolated);
+      check(reloaded.match("验证专用包装酸奶").equals(id), "custom food survives catalog reload");
+      JSONObject raw = new JSONObject().put("food", true).put("name", "verification")
+          .put("items", new JSONArray().put(new JSONObject().put("id", id).put("grams", 120)))
+          .put("oil", 0);
+      JSONObject result = reloaded.calculate(raw, true);
+      check(Math.abs(result.getDouble("kcal") - 96) < .0001,
+          "custom per-100g values calculate the expected 96 kcal at 120g");
+      check(result.getJSONArray("items").getJSONObject(0).getString("source").contains("用户"),
+          "custom food source remains visible in recorded nutrition");
+      boolean invalid = false;
+      try { reloaded.saveCustom("无效宏量营养素", 80, 200, 10, 2, 100); }
+      catch (IllegalArgumentException expected) { invalid = true; }
+      check(invalid, "invalid custom macronutrients are rejected");
+      invalid = false;
+      try { reloaded.saveCustom("验证专用包装酸奶", 80, 5, 10, 2, 120); }
+      catch (IllegalArgumentException expected) { invalid = true; }
+      check(invalid, "duplicate custom names are rejected");
+      invalid = false;
+      try { reloaded.saveCustom("无效能量", Double.NaN, 5, 10, 2, 100); }
+      catch (IllegalArgumentException expected) { invalid = true; }
+      check(invalid, "non-finite custom energy is rejected");
+      JSONObject exported = Store.get(c).export(new Prefs(isolated));
+      check(exported.getJSONArray("custom_foods").getJSONObject(0).getString("id").equals(id),
+          "JSON export includes custom food definitions");
+      check(ModelFiles.ready(c), "previously installed 2B offline model remains ready after update");
+      check(originalCustom.equals(c.getSharedPreferences("custom_foods", Context.MODE_PRIVATE).getAll()),
+          "personal custom food preferences are unchanged");
+      check(originalSettings.equals(new Prefs(c).p.getAll()), "personal settings are unchanged");
+      report.put("status", "passed");
+    } catch (Throwable e) {
+      try { report.put("status", "failed").put("error", e.toString()); } catch (Exception ignored) {}
+    } finally {
+      c.deleteSharedPreferences(preferenceName);
+      try {
+        report.put("checks", checks).put("sdk", android.os.Build.VERSION.SDK_INT)
+            .put("uid", android.os.Process.myUid()).put("version", BuildConfig.VERSION_NAME);
+        try (var stream = new FileOutputStream(new File(c.getFilesDir(), "catalog-verification.json"))) {
+          stream.write(report.toString(2).getBytes(StandardCharsets.UTF_8));
+        }
+      } catch (Exception ignored) {}
+      out.putString("report", report.toString());
+      finish(report.optString("status").equals("passed") ? Activity.RESULT_OK : Activity.RESULT_CANCELED, out);
+    }
+  }
+
+  android.view.accessibility.AccessibilityNodeInfo uiNode(String text) throws Exception {
+    getUiAutomation().waitForIdle(100, 4000);
+    var root = getUiAutomation().getRootInActiveWindow();
+    if (root != null) for (var node : root.findAccessibilityNodeInfosByText(text)) {
+      if (node.getText() != null && node.getText().toString().contains(text)) return node;
+    }
+    throw new AssertionError("Expected app UI: " + text);
+  }
+
+  void clickUi(String text) throws Exception {
+    var node = uiNode(text);
+    while (!node.isClickable() && node.getParent() != null) node = node.getParent();
+    if (!node.performAction(android.view.accessibility.AccessibilityNodeInfo.ACTION_CLICK))
+      throw new AssertionError("App UI click failed: " + text);
+    waitForIdleSync();
+  }
+
+  android.view.accessibility.AccessibilityNodeInfo findEdit(android.view.accessibility.AccessibilityNodeInfo root) {
+    if (root == null) return null;
+    if ("android.widget.EditText".contentEquals(root.getClassName())) return root;
+    for (int i = 0; i < root.getChildCount(); i++) {
+      var found = findEdit(root.getChild(i));
+      if (found != null) return found;
+    }
+    return null;
+  }
+
+  void catalogUiFixture() {
+    Context c = getTargetContext();
+    JSONObject report = new JSONObject();
+    Bundle out = new Bundle();
+    try {
+      Foods foods = new Foods(c);
+      MainActivity activity = (MainActivity) startActivitySync(new Intent(c, MainActivity.class)
+          .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+      waitForIdleSync();
+      runOnMainSync(() -> activity.chooseFood(foods, id -> {}));
+      check(uiNode("其他／自定义食物") != null, "custom food entry is visible in the real selector");
+      check(uiNode("包含 USDA 全部条目") != null, "full catalog toggle is visible");
+      clickUi("全部");
+      clickUi("水果");
+      check(uiNode("水果") != null, "fruit category can be selected");
+      var edit = findEdit(getUiAutomation().getRootInActiveWindow());
+      if (edit == null) throw new AssertionError("Search field missing");
+      Bundle text = new Bundle();
+      text.putCharSequence(android.view.accessibility.AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, "车厘子");
+      check(edit.performAction(android.view.accessibility.AccessibilityNodeInfo.ACTION_SET_TEXT, text),
+          "Chinese alias can be entered into the real search field");
+      waitForIdleSync();
+      check(uiNode("樱桃") != null, "real selector displays cherry for the alias query");
+      Bitmap screen = getUiAutomation().takeScreenshot();
+      if (screen != null) {
+        try (var stream = new FileOutputStream(new File(c.getCacheDir(), "catalog-ui.png"))) {
+          screen.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        }
+        screen.recycle();
+      }
+      clickUi("其他／自定义食物");
+      check(uiNode("自定义食物") != null && uiNode("保存并选用") != null,
+          "custom editor and save action are accessible on the device");
+      check(uiNode("每100克") != null, "custom editor explains the per-100g units");
+      clickUi("取消");
+      clickUi("关闭");
+      report.put("status", "passed").put("note", "No meal or custom food was saved by UI verification");
+    } catch (Throwable e) {
+      try { report.put("status", "failed").put("error", e.toString()); } catch (Exception ignored) {}
+    } finally {
+      try {
+        report.put("checks", checks).put("version", BuildConfig.VERSION_NAME);
+        try (var stream = new FileOutputStream(new File(c.getFilesDir(), "catalog-ui-verification.json"))) {
+          stream.write(report.toString(2).getBytes(StandardCharsets.UTF_8));
+        }
+      } catch (Exception ignored) {}
+      out.putString("report", report.toString());
+      finish(report.optString("status").equals("passed") ? Activity.RESULT_OK : Activity.RESULT_CANCELED, out);
     }
   }
 
