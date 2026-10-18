@@ -13,6 +13,13 @@
 
 以下使用和构建步骤主要适用于 Android；iPhone 的工程、安装、签名和后台限制请参阅 [iOS/README.md](iOS/README.md)。
 
+## 安装包
+
+- [Android 0.1.2 APK](releases/android/MealTrace-0.1.2-arm64.apk)：Android 11 以上、ARM64，可下载安装。
+- [iPhone 0.1.1 IPA（未签名）](releases/ios/MealTrace-0.1.1-unsigned.ipa)：iOS 17 以上，需使用自己的 Apple 开发账号重新签名后安装，不能直接点击安装。
+
+安装包均不包含约 1.95GB 的离线模型。版本、签名说明与 SHA256 校验方法见 [安装包说明](releases/README.md)。
+
 ## Android 已实现
 
 - 本地库扩展到 7,793 条 USDA 数据，113 条整理了常见中文与别名；分类、别名/英文搜索，以及按包装或配方数据添加的个人自定义食物。自定义支持 kJ/kcal 换算并随记录导出，明确标注为用户填写。

@@ -1,0 +1,2 @@
+f2702645d37030c40b65adc73988616aedc3cc44cc719a9484d49946bf79be6b  android/MealTrace-0.1.2-arm64.apk
+c69633c25fad6299b12df7c58794cef1189230fd4b499ee5eb17e8094daf0c9f  ios/MealTrace-0.1.1-unsigned.ipa
