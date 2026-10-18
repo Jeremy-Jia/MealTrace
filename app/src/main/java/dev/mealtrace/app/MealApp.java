@@ -13,6 +13,11 @@ public final class MealApp extends Application {
     Notify.channels(this);
   }
 
+  @Override public void onTrimMemory(int level) {
+    super.onTrimMemory(level);
+    if (level >= TRIM_MEMORY_RUNNING_LOW) LocalVision.releaseIdle();
+  }
+
   static void changed(Context c) {
     c.sendBroadcast(new Intent("dev.mealtrace.CHANGED").setPackage(c.getPackageName()));
     MealWidget.update(c);

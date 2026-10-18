@@ -16,6 +16,22 @@ def run(args, **kwargs):
     subprocess.run([str(x) for x in args], check=True, **kwargs)
 
 
+def prepare_source(source):
+    source.mkdir(parents=True, exist_ok=True)
+    if not (source / ".git").exists():
+        run(["git", "init", source])
+        run(["git", "-C", source, "remote", "add", "origin", "https://github.com/ggml-org/llama.cpp.git"])
+    run(["git", "-C", source, "fetch", "--depth=1", "origin", REVISION])
+    run(["git", "-C", source, "checkout", "--detach", "--force", "FETCH_HEAD"])
+    cli = source / "tools/mtmd/mtmd-cli.cpp"
+    original = cli.read_text()
+    old = '    ctx.chat_history.push_back(new_msg);\n    return formatted;'
+    new = '    if (new_msg.role == "user") formatted += "<think>\\n\\n</think>\\n\\n";\n' + old
+    if original.count(old) != 1:
+        raise SystemExit("Pinned runner source no longer matches the audited Qwen no-thinking patch.")
+    cli.write_text(original.replace(old, new))
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--ndk", type=Path)
@@ -25,20 +41,8 @@ def main():
         raise SystemExit("Set ANDROID_NDK_HOME to Android NDK r30, or pass --ndk.")
     cache = ROOT / ".native"
     source = cache / "llama"
-    source.mkdir(parents=True, exist_ok=True)
-    if not (source / ".git").exists():
-        run(["git", "init", source])
-        run(["git", "-C", source, "remote", "add", "origin", "https://github.com/ggml-org/llama.cpp.git"])
-    run(["git", "-C", source, "fetch", "--depth=1", "origin", REVISION])
     # This directory is an exclusively managed build cache, not the user's working tree.
-    run(["git", "-C", source, "checkout", "--detach", "--force", "FETCH_HEAD"])
-    cli = source / "tools/mtmd/mtmd-cli.cpp"
-    original = cli.read_text()
-    old = '    ctx.chat_history.push_back(new_msg);\n    return formatted;'
-    new = '    if (new_msg.role == "user") formatted += "<think>\\n\\n</think>\\n\\n";\n' + old
-    if original.count(old) != 1:
-        raise SystemExit("Pinned runner source no longer matches the audited Qwen no-thinking patch.")
-    cli.write_text(original.replace(old, new))
+    prepare_source(source)
     build = cache / "build-android"
     command = ["cmake", "-S", source, "-B", build,
                f"-DCMAKE_TOOLCHAIN_FILE={ndk}/build/cmake/android.toolchain.cmake",

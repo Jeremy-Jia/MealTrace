@@ -1,3 +1,5 @@
+> 本文件保留首版历史验证记录；Android 0.1.3 的 NPU、模型复用和回退验证见 [最新实测](ANDROID-0.1.3-VERIFICATION.md)。
+
 # 食迹 0.1.0 实测记录
 
 日期：2026-10-18。设备读取为 Xiaomi 18 Pro（M610BB），SM8950，Android 17 / API 37，约 16GB RAM。应用 targetSdk 36，最低 API 30，ARM64。测试使用公开 Nutrition5k 图片和应用自己创建的媒体项，不读取个人相册做测试。

@@ -22,6 +22,14 @@ def main():
     binary = ROOT / "app/src/main/jniLibs/arm64-v8a/libmealvision.so"
     if not binary.exists() or hashlib.sha256(binary.read_bytes()).hexdigest() != manifest["sha256"]:
         raise SystemExit("Native runner is absent or changed. Rebuild with --native.")
+    acceleration = json.loads((ROOT / "app/src/main/assets/acceleration-build.json").read_text())
+    for item in acceleration["files"]:
+        native = binary.parent / item["name"]
+        if not native.exists() or hashlib.sha256(native.read_bytes()).hexdigest() != item["sha256"]:
+            raise SystemExit("Acceleration binary changed: " + item["name"] + ". See tools/prepare_acceleration.py.")
+    worker = ROOT / "tools/native/worker.inc"
+    if hashlib.sha256(worker.read_bytes()).hexdigest() != acceleration["worker_source_sha256"]:
+        raise SystemExit("Worker source changed; rebuild acceleration binaries.")
     env = os.environ.copy()
     if "JAVA_HOME" not in env:
         brew = Path("/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home")

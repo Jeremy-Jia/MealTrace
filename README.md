@@ -4,18 +4,18 @@
 
 | 平台 | 当前版本 | 最低构建目标 | 本地推理 | 源码与构建说明 |
 | --- | --- | --- | --- | --- |
-| Android | 0.1.2 | Android 11 / API 30，ARM64 | llama.cpp CPU | [app/](app/)，下方构建步骤 |
+| Android | 0.1.3 | Android 11 / API 30，ARM64 | Hexagon NPU 优先，CPU 自动回退 | [app/](app/)，下方构建步骤 |
 | iPhone | 0.1.1 | iOS 17 | llama.cpp Metal GPU | [iOS/](iOS/README.md)，SwiftUI / Xcode 工程 |
 
 两个平台共用 Qwen3.5-2B 离线模型、7,793 条 USDA 食物数据和常用中文别名，并支持分类搜索、自定义食物、饮食统计及体重记录。模型权重通过应用下载或用户导入，不随源码仓库分发。iPhone 需要使用自己的 Apple 开发账号签名安装，后台发现照片由 iOS 调度，打开应用时补扫；具体能力与限制见 [iPhone 说明](iOS/README.md)。
 
-**当前均为试用版本。** Android 尚未启用 NPU，iPhone 未接入 Neural Engine。照片估计的份量必须核对，不能把它当作精确摄入测量或营养诊断。当前主要实测 Xiaomi 18 Pro / Android 17 与 iPhone 18 Pro / iOS 27.0.1，较低目标系统尚未完整实测。参见 [Android 实测](docs/ANDROID-0.1.2-VERIFICATION.md)和 [iPhone 实测](iOS/docs/VERIFICATION.md)。
+**当前均为试用版本。** Android 在兼容设备上使用 Hexagon NPU，其他设备自动使用 CPU；iPhone 使用 Metal GPU，未接入 Neural Engine。照片估计的份量必须核对，不能把它当作精确摄入测量或营养诊断。当前主要实测 Xiaomi 18 Pro / Android 17 与 iPhone 18 Pro / iOS 27.0.1，较低目标系统尚未完整实测。参见 [Android 0.1.3 实测](docs/ANDROID-0.1.3-VERIFICATION.md)和 [iPhone 实测](iOS/docs/VERIFICATION.md)。
 
 以下使用和构建步骤主要适用于 Android；iPhone 的工程、安装、签名和后台限制请参阅 [iOS/README.md](iOS/README.md)。
 
 ## 安装包
 
-- [Android 0.1.2 APK](releases/android/MealTrace-0.1.2-arm64.apk)：Android 11 以上、ARM64，可下载安装。
+- [Android 0.1.3 APK](releases/android/MealTrace-0.1.3-arm64.apk)：Android 11 以上、ARM64，可下载安装。
 - [iPhone 0.1.1 IPA（未签名）](releases/ios/MealTrace-0.1.1-unsigned.ipa)：iOS 17 以上，需使用自己的 Apple 开发账号重新签名后安装，不能直接点击安装。
 
 安装包均不包含约 1.95GB 的离线模型。版本、签名说明与 SHA256 校验方法见 [安装包说明](releases/README.md)。
@@ -24,6 +24,7 @@
 
 - 本地库扩展到 7,793 条 USDA 数据，113 条整理了常见中文与别名；分类、别名/英文搜索，以及按包装或配方数据添加的个人自定义食物。自定义支持 kJ/kcal 换算并随记录导出，明确标注为用户填写。
 - 本地食物候选筛选、Qwen3.5-2B 视觉草稿、离线营养表计算。
+- 非 Root 的 Hexagon NPU 自动加速，初始化、超时或结果解析失败时重试 CPU。连续识别复用模型，每张清空上下文，空闲 60 秒后释放；设置中可关闭 NPU。
 - 系统相机目录新照片监测、内容触发任务、15 分钟周期补扫和开机恢复注册。
 - 照片导入与系统分享；餐食份量、实际食用比例、日期和餐次修正；重复与非本人餐食排除。
 - 每日累计、7/30 天趋势、体重日志、日周月汇总通知、JSON 导出与桌面小部件。
@@ -73,7 +74,9 @@ export ANDROID_NDK_HOME=/path/to/android-ndk-r30
 python3 tools/build.py --native
 ```
 
-上游固定于 `547208dca250ceb3e4c8615598d043f2b602a527`，仅加入适用于 Qwen 的关闭思考提示补丁。二进制以 `.so` 文件名放在已安装原生程序目录，本体是 ARM64 PIE 可执行文件。不会运行下载的可执行代码，模型是经哈希校验的数据文件。
+可选 NPU 引擎及 DSP 重建方法、适配条件和失败回退策略见 [Android 加速说明](docs/ANDROID-ACCELERATION.md)。`--native` 重建通用 CPU 引擎；NPU 文件由 `tools/prepare_acceleration.py` 单独构建，普通 APK 构建会校验两组二进制的来源哈希。
+
+上游固定于 `547208dca250ceb3e4c8615598d043f2b602a527`。CPU 引擎加入适用于 Qwen 的关闭思考提示补丁；NPU 引擎还加入仓库中的私有管道 worker，用于在连续照片间复用模型并重置上下文。两种推理主程序以 `.so` 文件名放在已安装原生程序目录，本体是 ARM64 PIE 可执行文件；DSP skeleton 是单独的 Hexagon ELF。不会运行下载的可执行代码，模型是经哈希校验的数据文件。
 
 ## 文档与限制
 

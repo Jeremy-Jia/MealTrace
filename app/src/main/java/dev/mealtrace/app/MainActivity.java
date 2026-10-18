@@ -1127,12 +1127,21 @@ public final class MainActivity extends Activity {
             ModelDownload.running
                 ? ModelDownload.progress
                 : ready
-                    ? "Qwen3.5-2B · CPU ARM64\n照片仅在手机中处理；当前版本未启用 NPU。"
+                    ? "Qwen3.5-2B · 离线识别\n" + new Acceleration(this).description()
                     : "首次需约 1.95 GB " + "模型文件。下载只获取公开模型，不上传照片；之后可断网使用。",
             13,
             MUTED,
             false));
     gap(model, 12);
+    Acceleration acceleration = new Acceleration(this);
+    Switch npu = new Switch(this);
+    npu.setText("优先使用 NPU 加速");
+    npu.setChecked(acceleration.enabled());
+    npu.setOnCheckedChangeListener((v, on) -> {
+      acceleration.enabled(on);
+      render();
+    });
+    add(model, npu);
     if (!ready)
       add(
           model,

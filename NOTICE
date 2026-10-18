@@ -3,7 +3,14 @@ MealTrace / 食迹, 2026. Original app code: MIT (see LICENSE).
 Bundled ARM64 vision runner: llama.cpp and GGML, MIT.
 Pinned source: https://github.com/ggml-org/llama.cpp/tree/547208dca250ceb3e4c8615598d043f2b602a527
 Includes a Qwen-only no-thinking prompt patch. Native provenance and SHA256:
-app/src/main/assets/native-build.json. Rebuild: tools/prepare_native.py.
+app/src/main/assets/native-build.json and acceleration-build.json.
+Rebuild: tools/prepare_native.py and tools/prepare_acceleration.py.
+The optional Hexagon worker adds the MealTrace private stdio protocol in
+tools/native/worker.inc. Generic CPU fallback remains a separate executable.
+DSP skeleton: upstream GGML Hexagon code, built with Hexagon SDK 6.6.0.0 /
+tools 19.0.07, V81 compatibility target. Qualcomm FastRPC drivers are provided
+by the handset and are not redistributed in this repository or APK.
+SDK/toolchain source and build provenance: docs/ANDROID-ACCELERATION.md.
 Additional native dependencies include nlohmann/json, cpp-httplib, xxHash,
 SHA-256 and rotate-bits; licenses are in licenses/ and bundled in APK assets.
 

@@ -1,0 +1,33 @@
+{
+  "upstream": "https://github.com/ggml-org/llama.cpp",
+  "revision": "547208dca250ceb3e4c8615598d043f2b602a527",
+  "patches": [
+    "Existing Qwen no-thinking prompt",
+    "tools/native/worker.inc and apply_worker.py"
+  ],
+  "worker_protocol": 1,
+  "backend": "Hexagon HTP0 with V81 DSP skeleton; no OpenCL/Vulkan",
+  "cpu_requirement": "FP16 scalar/vector, dotprod and i8mm; gated by ARMv8 capability executable",
+  "cpu_fallback": "Separate generic ARM64 libmealvision.so, no vendor dependencies",
+  "sdk": "Hexagon SDK 6.6.0.0, tools 19.0.07",
+  "android_ndk": "android-ndk-r30",
+  "sdk_image": "ghcr.io/snapdragon-toolchain/arm64-android@sha256:91714433626f0d94a926538a1e46ec43756c5b8e3262b91b95df1e812940aed1",
+  "worker_source_sha256": "5f94d6de02121958c3075668cb41bb1462e73bcd81589fec1e127ea4fd2814d0",
+  "files": [
+    {
+      "name": "libmealvision_npu.so",
+      "size": 8586960,
+      "sha256": "7549a76308c6cd1853b29a2bc067d57909c023ee7c2e453621b92cf0ac31f4ef"
+    },
+    {
+      "name": "libggml-htp-v81.so",
+      "size": 842056,
+      "sha256": "03f77922e79525159cef7b34619f8d874b04c5fced4e6d4af0a03e2a3c81f8e3"
+    },
+    {
+      "name": "libmealaccelprobe.so",
+      "size": 5576,
+      "sha256": "0f90e3df54b4acb295211f268e79573e52ddcc36708893c3596eca6bb01fc510"
+    }
+  ]
+}

@@ -3,7 +3,7 @@
   "license": "Apache-2.0",
   "source": "https://huggingface.co/Qwen/Qwen3.5-2B",
   "quantization": "https://huggingface.co/unsloth/Qwen3.5-2B-GGUF/tree/f6d5376be1edb4d416d56da11e5397a961aca8ae",
-  "backend": "llama.cpp CPU ARM64; no NPU acceleration claimed",
+  "backend": "llama.cpp ARM64; optional Hexagon NPU with automatic generic CPU fallback",
   "files": [
     {
       "name": "model.gguf",
